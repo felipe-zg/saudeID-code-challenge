@@ -2,9 +2,9 @@
   "name": "saudeid-code-challenge",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev ./src",
+    "build": "next build ./src",
+    "start": "next start ./src",
     "lint": "eslint src --max-warnings=0",
     "test": "jest",
     "test:watch": "yarn test --watch"
