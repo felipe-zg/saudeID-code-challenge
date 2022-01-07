@@ -58,7 +58,7 @@ export const getTodosByUser = (
 ) => async (dispatch) => {
 	try {
 		dispatch(setLoading(true));
-		const {body} = await AxiosHttpClient.getInstance().get({url: `https://gorest.co.in/public/v1/users/${id}/todos`});
+		const {body} = await AxiosHttpClient.getInstance().get({url: `/users/${id}/todos`});
 		dispatch(setTodos(body.data as ITodo[]));
 		onSuccess && onSuccess();
 	} catch (e) {

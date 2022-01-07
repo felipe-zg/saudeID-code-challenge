@@ -14,7 +14,7 @@ export class AxiosHttpClient<R = unknown> implements HttpGetClient<R> {
     }
 
     private httpClient: AxiosInstance = axios.create({
-        baseURL: process.env.REACT_APP_API_GATEWAY_URL,
+        baseURL: 'https://gorest.co.in/public/v1',
         timeout: 30000,
         headers: { 'Access-Control-Allow-Origin': '*' },
     });
