@@ -1,9 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '..';
+import { AxiosHttpClient } from '../../infra/http/axiosHttpClient';
 
 type TodosState = {
-	todos: Array<ITodo>;
+	todos: ITodo[];
 	loading: boolean;
+	error?: string;
 };
 
 export interface ITodo {
@@ -29,6 +31,12 @@ const TodosSlice = createSlice({
 				loading: payload,
 			};
 		},
+		setError(state, {payload}: PayloadAction<string>) {
+			return {
+				...state,
+				error: payload,
+			};
+		},
 		setTodos(state, {payload}: PayloadAction<ITodo[]>) {
 			return {
 				...state,
@@ -39,8 +47,26 @@ const TodosSlice = createSlice({
 });
 
 
-export const {setLoading, setTodos} = TodosSlice.actions;
+export const {setLoading, setError, setTodos} = TodosSlice.actions;
 
 export default TodosSlice.reducer;
+
+export const getTodosByUser = (
+	id: number,
+	onSuccess?: () => void,
+	onError?: () => void
+) => async (dispatch) => {
+	try {
+		dispatch(setLoading(true));
+		const {body} = await AxiosHttpClient.getInstance().get({url: `https://gorest.co.in/public/v1/users/${id}/todos`});
+		dispatch(setTodos(body.data as ITodo[]));
+		onSuccess && onSuccess();
+	} catch (e) {
+		dispatch(setError('Falha ao buscar lista de ToDos'));
+		onError && onError();
+	} finally {
+		dispatch(setLoading(false));
+	}
+};
 
 export const selectTodosState = (state: RootState) => state.todos;
